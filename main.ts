@@ -24,12 +24,12 @@ input.onButtonPressed(Button.B, function () {
 })
 function CarMove () {
     Joystick()
-    if (moveFlag == 2) {
+    if (moveFlag == 1) {
+        CarOmni()
+    } else if (moveFlag == 2) {
         CarTurn()
     } else if (moveFlag == 3) {
         CarDrift()
-    } else {
-        CarOmni()
     }
 }
 function CarTurn () {
@@ -74,7 +74,8 @@ let moveFlag = 0
 let sflag = 0
 led.setBrightness(255)
 basic.showIcon(IconNames.Happy)
-radio.setGroup(39)
+let radio_gp = 39
+radio.setGroup(radio_gp)
 let myDot = game.createSprite(3, 3)
 pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
 pins.setPull(DigitalPin.P14, PinPullMode.PullNone)
@@ -97,6 +98,7 @@ basic.forever(function () {
         moveFlag = -1
         basic.showIcon(IconNames.No)
         music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 500, 500, 255, 0, 50, SoundExpressionEffect.Vibrato, InterpolationCurve.Linear), SoundExpressionPlayMode.InBackground)
+        radio.sendValue("stop", -1)
     } else if (pins.digitalReadPin(DigitalPin.P13) == 0) {
         moveFlag = 1
         basic.showIcon(IconNames.Happy)
