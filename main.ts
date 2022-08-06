@@ -1,9 +1,9 @@
 // 降低靈敏度
 function dead_zone () {
-    if (x < 140 && x > -140) {
+    if (x > -140 && x < 140) {
         x = 0
     }
-    if (y < 140 && y > -140) {
+    if (y > -140 && y < 140) {
         y = 0
     }
 }
@@ -13,11 +13,14 @@ function CarOmni () {
     radio.sendValue("w2", w2)
     radio.sendValue("w1", w1)
 }
+input.onButtonPressed(Button.A, function () {
+    radio.sendValue("f1", 0)
+})
 function Joystick () {
     x = Math.map(pins.analogReadPin(AnalogPin.P1), 0, 1023, -255, 255)
     y = Math.map(pins.analogReadPin(AnalogPin.P2), 0, 1023, -255, 255)
     myDot.set(LedSpriteProperty.X, Math.map(x, -255, 255, 0, Display))
-    myDot.set(LedSpriteProperty.X, Math.map(y, -255, 255, Display, 0))
+    myDot.set(LedSpriteProperty.Y, Math.map(y, -255, 255, Display, 0))
     dead_zone()
 }
 input.onButtonPressed(Button.B, function () {
