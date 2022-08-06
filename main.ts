@@ -8,7 +8,10 @@ function dead_zone () {
     }
 }
 function CarOmni () {
-	
+    w1 = x + y
+    w2 = x - y
+    radio.sendValue("w2", w2)
+    radio.sendValue("w1", w1)
 }
 function Joystick () {
     x = Math.map(pins.analogReadPin(AnalogPin.P1), 0, 1023, -255, 255)
@@ -30,11 +33,41 @@ function CarMove () {
     }
 }
 function CarTurn () {
-	
+    if (x > 0) {
+        if (y != 0) {
+            radio.sendValue("rw1", 0)
+            radio.sendValue("rw2", y)
+        } else {
+            radio.sendValue("rw1", -1 * x)
+            radio.sendValue("rw2", -1 * x)
+        }
+    } else if (x < 0) {
+        if (y != 0) {
+            radio.sendValue("rw1", -1 * y)
+            radio.sendValue("rw2", 0)
+        } else {
+            radio.sendValue("rw1", -1 * x)
+            radio.sendValue("rw2", -1 * x)
+        }
+    } else {
+        radio.sendValue("rw1", -1 * y)
+        radio.sendValue("rw2", y)
+    }
 }
 function CarDrift () {
-	
+    radio.sendValue("a1", x)
+    if (y > 0) {
+        if (x > 0) {
+            radio.sendValue("a2", Math.map(y, 0, 255, 0, -100))
+        } else {
+            radio.sendValue("a2", Math.map(y, 0, 255, 0, 100))
+        }
+    } else {
+        radio.sendValue("a2", 0)
+    }
 }
+let w2 = 0
+let w1 = 0
 let y = 0
 let x = 0
 let moveFlag = 0
